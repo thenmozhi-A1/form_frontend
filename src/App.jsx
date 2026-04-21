@@ -1,9 +1,29 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import SignatureCanvas from 'react-signature-canvas'
 import './App.css'
+
+// Helper function to convert number to words (Indian Numbering System)
+const numberToWords = (num) => {
+  if (num === 0) return 'Zero Only';
+  if (!num || isNaN(num)) return '';
+
+  const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  const inWords = (n) => {
+    if (n < 20) return a[n];
+    if (n < 100) return b[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + a[n % 10] : '');
+    if (n < 1000) return a[Math.floor(n / 100)] + 'Hundred ' + (n % 100 !== 0 ? 'And ' + inWords(n % 100) : '');
+    if (n < 100000) return inWords(Math.floor(n / 1000)) + 'Thousand ' + (n % 1000 !== 0 ? inWords(n % 1000) : '');
+    if (n < 10000000) return inWords(Math.floor(n / 100000)) + 'Lakh ' + (n % 100000 !== 0 ? inWords(n % 100000) : '');
+    return inWords(Math.floor(n / 10000000)) + 'Crore ' + (n % 10000000 !== 0 ? inWords(n % 10000000) : '');
+  };
+
+  return inWords(Math.round(num)).trim() + ' Only';
+}
 
 const App = () => {
   const componentRef = useRef(null);
@@ -42,6 +62,27 @@ const App = () => {
     executiveSig: ''
   })
 
+  // Automatic Calculations Logic
+  useEffect(() => {
+    const total = parseFloat(formData.total) || 0;
+    const gstRate = 0.18;
+    const calculatedGst = total * gstRate;
+    const calculatedGrandTotal = total + calculatedGst;
+
+    // Only update if values actually changed to avoid infinite loop
+    if (
+      formData.gstAmount !== calculatedGst.toFixed(2) ||
+      formData.grandTotal !== calculatedGrandTotal.toFixed(2)
+    ) {
+      setFormData(prev => ({
+        ...prev,
+        gstAmount: calculatedGst.toFixed(2),
+        grandTotal: calculatedGrandTotal.toFixed(2),
+        paymentAmountWords: numberToWords(calculatedGrandTotal)
+      }));
+    }
+  }, [formData.total]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     if (type === 'checkbox') {
@@ -79,8 +120,8 @@ const App = () => {
     e.preventDefault()
     try {
       console.log('Submitting Form Data:', formData)
-      // Save to Backend using the computer's Local IP so mobile devices can access it
-      const response = await axios.post('http://192.168.1.23:8080/api/forms', formData)
+      // Save to Backend using the live Railway URL so mobile devices can access it
+      const response = await axios.post('https://spring-backend-production-6e59.up.railway.app/api/forms', formData)
       console.log('Server Response:', response.data)
 
       alert('Data saved successfully to database!')
