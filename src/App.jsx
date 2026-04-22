@@ -252,8 +252,8 @@ const App = () => {
           </div>
           {/* Row 3: Address Line 2 & Pin Code */}
           <div className="customer-grid">
-            <div className="customer-row" style={{ flex: 1.5 }}>
-              <input type="text" name="addressLine2" value={formData.addressLine2} onChange={handleChange} className="line-input" style={{ marginLeft: '75px' }} />
+            <div className="customer-row">
+              <input type="text" name="addressLine2" value={formData.addressLine2} onChange={handleChange} className="line-input" placeholder="Address Line 2" />
             </div>
             <div className="customer-row">
               <span className="bold-label">Pin Code :</span>
@@ -263,7 +263,7 @@ const App = () => {
 
           {/* Row 4: Contact Person & Phone */}
           <div className="customer-grid">
-            <div className="customer-row" style={{ flex: 1.5 }}>
+            <div className="customer-row">
               <span className="bold-label">Contact Person ( Mr/Mrs ) :</span>
               <input type="text" name="contactPerson" value={formData.contactPerson} onChange={handleChange} className="line-input" />
             </div>
@@ -275,7 +275,7 @@ const App = () => {
 
           {/* Row 5: Email Id & GST */}
           <div className="customer-grid">
-            <div className="customer-row" style={{ flex: 1.5 }}>
+            <div className="customer-row">
               <span className="bold-label">Email Id :</span>
               <input type="email" name="emailId" value={formData.emailId} onChange={handleChange} className="line-input" />
             </div>
@@ -484,7 +484,7 @@ const App = () => {
         <footer className="final-footer">
           <section className="signature-section">
             <div className="sig-item">
-              <div style={{ border: '1px dashed #7ea3ff', borderRadius: '8px', background: 'rgba(255,255,255,0.5)', marginBottom: '5px' }}>
+              <div className="sig-canvas-wrapper">
                 <SignatureCanvas
                   ref={sigCanvasRef}
                   penColor='black'
@@ -493,13 +493,13 @@ const App = () => {
               </div>
               <button
                 type="button"
+                className="btn-clear-sig no-print"
                 onClick={() => sigCanvasRef.current.clear()}
-                style={{ fontSize: '11px', padding: '3px 8px', marginBottom: '5px', borderRadius: '5px', border: '1px solid #7ea3ff', background: '#fff', cursor: 'pointer' }}
               >Clear</button>
               <p className="sig-text">Customer's Signature & Stamp</p>
             </div>
             <div className="sig-item">
-              <div style={{ border: '1px dashed #7ea3ff', borderRadius: '8px', background: 'rgba(255,255,255,0.5)', marginBottom: '5px' }}>
+              <div className="sig-canvas-wrapper">
                 <SignatureCanvas
                   ref={execCanvasRef}
                   penColor='black'
@@ -508,8 +508,8 @@ const App = () => {
               </div>
               <button
                 type="button"
+                className="btn-clear-sig no-print"
                 onClick={() => execCanvasRef.current.clear()}
-                style={{ fontSize: '11px', padding: '3px 8px', marginBottom: '5px', borderRadius: '5px', border: '1px solid #7ea3ff', background: '#fff', cursor: 'pointer' }}
               >Clear</button>
               <p className="sig-text">Signature Executive</p>
             </div>
