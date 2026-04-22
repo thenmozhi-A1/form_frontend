@@ -210,7 +210,7 @@ const App = () => {
           <div className="header-left">
             <div className="logo-section">
               <div className="logo-circle">
-                <img src="/bny-logo.png" alt="logo" height={130} width={130} />
+                <img src={`${import.meta.env.BASE_URL}bny-logo.png`} alt="logo" height={130} width={130} />
                 <sup className="trademark">TM</sup>
               </div>
             </div>
