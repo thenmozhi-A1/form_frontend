@@ -11,12 +11,17 @@
   --accent-color: #43a047;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: var(--bg-color);
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: var(--text-dark);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 input,
@@ -1127,7 +1132,9 @@ td[rowspan] {
   .customer-row { flex-direction: column; align-items: flex-start; gap: 5px; width: 100%; }
   .customer-row .line-input { width: 100%; margin-left: 0 !important; }
   .subscription-section { width: 100%; margin-top: 20px; }
-  .form-table { width: 100%; }
+  .form-table { width: 100%; word-break: break-word; }
+  .form-table th { width: auto !important; }
+  .bold-label { white-space: normal; }
   .amount-words-row .inline-row { flex-direction: column; align-items: flex-start; gap: 5px; }
   .amount-words-row .bottom-line-input { width: 100%; }
   .payment-mode-section { flex-direction: column; align-items: flex-start; gap: 15px; }
