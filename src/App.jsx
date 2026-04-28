@@ -10,6 +10,7 @@ const App = () => {
   const componentRef = useRef(null);
   const sigCanvasRef = useRef(null);
   const execCanvasRef = useRef(null);
+  const today = new Date().toISOString().split('T')[0];
 
   const downloadPDF = async () => {
     const element = componentRef.current;
@@ -25,8 +26,21 @@ const App = () => {
 
         const inputs = clonedDoc.querySelectorAll('input[type="text"], input[type="date"], input[type="email"]');
         inputs.forEach(input => {
+          // Skip inputs that are meant to be hidden (opacity 0)
+          if (window.getComputedStyle(input).opacity === '0') {
+            input.style.display = 'none';
+            return;
+          }
+          
           const span = clonedDoc.createElement('span');
-          span.innerText = input.value;
+          let displayValue = input.value;
+          
+          if (input.type === 'date' && displayValue) {
+            const [y, m, d] = displayValue.split('-');
+            displayValue = `${d}/${m}/${y}`;
+          }
+          
+          span.innerText = displayValue;
 
           // Manually copy the most important styles
           const compStyle = clonedDoc.defaultView.getComputedStyle(input);
@@ -186,6 +200,12 @@ const App = () => {
     }
   }
 
+  const formatDateForDisplay = (dateStr) => {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
+  };
+
   return (
     <div className='page-container'>
       <div className="form-wrapper" ref={componentRef}>
@@ -215,7 +235,46 @@ const App = () => {
           <div className="header-right">
             <div className="header-input-group">
               <label>Date :</label>
-              <input type="date" min={today} />
+              <div style={{ position: 'relative', width: '200px' }}>
+                <input
+                  type="date"
+                  name="date"
+                  min={today}
+                  value={formData.date}
+                  onChange={handleChange}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0,
+                    cursor: 'pointer',
+                    zIndex: 2
+                  }}
+                />
+                <input
+                  type="text"
+                  readOnly
+                  value={formatDateForDisplay(formData.date)}
+                  placeholder="DD/MM/YYYY"
+                  style={{
+                    width: '100%',
+                    padding: '5px',
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                    zIndex: 1
+                  }}
+                />
+                <span style={{ 
+                  position: 'absolute', 
+                  right: '10px', 
+                  top: '50%', 
+                  transform: 'translateY(-50%)',
+                  pointerEvents: 'none',
+                  fontSize: '10px'
+                }}>▼</span>
+              </div>
             </div>
             <div className="header-input-group">
               <label>City :</label>
@@ -338,8 +397,8 @@ const App = () => {
 
               {/* Row 4 - Additional Plans + Total Row */}
               <tr>
-                <td className="text-center no-v" rowSpan="4" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
-                <td colSpan="2" className="no-v" rowSpan="4" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
+                <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
+                <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
                   <div className="row-content">
                     <span className="item-label">Additional Plans</span>
                     <div className="additional-plans-grid">
@@ -359,35 +418,24 @@ const App = () => {
                   </div>
                 </td>
                 <td className="summary-label">Total</td>
-                <td className="summary-val-col">
-                  <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" />
+                <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
+                  <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
                 </td>
               </tr>
 
               {/* Summary Bottom Rows */}
-              <tr>
+              <tr style={{ height: '30px' }}>
                 <td className="summary-label">GST</td>
-                <td className="summary-val-col">
-                  <input type="text" name="gstAmount" value={formData.gstAmount} onChange={handleChange} className="summary-input" />
+                <td className="summary-val-col" style={{ position: 'relative' }}>
+                  <input type="text" name="gstAmount" value={formData.gstAmount} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
                 </td>
               </tr>
-              <tr>
+              <tr style={{ height: '30px' }}>
                 <td className="summary-label grand-total">Grand Total</td>
-                <td className="summary-val-col">
-                  <input type="text" name="grandTotal" value={formData.grandTotal} onChange={handleChange} className="summary-input" />
+                <td className="summary-val-col" style={{ position: 'relative' }}>
+                  <input type="text" name="grandTotal" value={formData.grandTotal} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
                 </td>
               </tr>
-              <tr>
-                <td className="summary-label">
-                  <input type="text" className="summary-input" />
-                </td>
-                <td className="summary-val-col">
-                  <input type="text" className="summary-input" />
-                </td>
-              </tr>
-
-
-
               <tr>
                 <td colSpan="5" className="amount-words-row">
                   <div className="inline-row p-10">
@@ -410,7 +458,46 @@ const App = () => {
                     </div>
                     <div className="cheque-date-field">
                       <span className="bold-label">Cheque Date :</span>
-                      <input type="text" name="chequeDate" placeholder="DD/MM/YYYY" value={formData.chequeDate} onChange={handleChange} className="bottom-line-input" />
+                      <div style={{ position: 'relative', width: '150px', display: 'inline-block', verticalAlign: 'middle' }}>
+                        <input
+                          type="date"
+                          name="chequeDate"
+                          min={today}
+                          value={formData.chequeDate}
+                          onChange={handleChange}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            opacity: 0,
+                            cursor: 'pointer',
+                            zIndex: 2
+                          }}
+                        />
+                        <input
+                          type="text"
+                          readOnly
+                          value={formatDateForDisplay(formData.chequeDate)}
+                          placeholder="DD/MM/YYYY"
+                          className="bottom-line-input"
+                          style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            pointerEvents: 'none',
+                            zIndex: 1
+                          }}
+                        />
+                        <span style={{ 
+                          position: 'absolute', 
+                          right: '5px', 
+                          top: '50%', 
+                          transform: 'translateY(-50%)',
+                          pointerEvents: 'none',
+                          fontSize: '10px'
+                        }}>▼</span>
+                      </div>
                     </div>
                   </div>
                 </td>
