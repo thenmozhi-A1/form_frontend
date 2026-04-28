@@ -1140,12 +1140,22 @@ td[rowspan] {
   .header-left { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
   .header-center { width: 100%; margin-bottom: 15px; }
   .company-title { font-size: 28px; }
-  .header-right { margin-top: 10px; width: 100%; flex-direction: column; align-items: flex-start; }
-  .header-input-group { width: 100%; justify-content: flex-start; gap: 10px; margin-bottom: 5px; }
-  .header-input-group input { width: 100%; max-width: 200px; }
-  .customer-grid { flex-direction: column; gap: 10px; }
-  .customer-row { flex-direction: column; align-items: flex-start; gap: 5px; width: 100%; }
-  .customer-row .line-input { width: 100%; margin-left: 0 !important; }
+  .signature-section { 
+    flex-direction: column !important; 
+    align-items: center !important; 
+    gap: 30px !important; 
+    padding: 15px 10px !important; 
+    width: 100% !important;
+  }
+  .sig-item { 
+    width: 100% !important; 
+    max-width: 300px !important; 
+    margin: 0 auto !important;
+  }
+  .sigCanvas {
+    width: 100% !important;
+    max-width: 250px !important;
+  }
   /* Strict Vertical Layout for Mobile Cards */
   .desktop-only { display: none !important; }
   .mobile-only { display: block !important; }
