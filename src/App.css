@@ -1119,8 +1119,13 @@ td[rowspan] {
 }
 /* Additional Mobile Responsiveness */
 @media (max-width: 768px) {
-  .page-container { padding: 10px; }
-  .form-wrapper { width: 100%; padding: 15px; }
+  html, body { 
+    overflow-x: hidden !important; 
+    position: relative;
+    width: 100%;
+  }
+  .page-container { padding: 10px; overflow-x: hidden; }
+  .form-wrapper { width: 100%; padding: 15px; overflow-x: hidden; }
   .main-header { flex-direction: column; align-items: center; text-align: center; border-bottom: 2px solid var(--text-dark); padding-bottom: 15px; }
   .header-left { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
   .header-center { width: 100%; margin-bottom: 15px; }
@@ -1131,8 +1136,8 @@ td[rowspan] {
   .customer-grid { flex-direction: column; gap: 10px; }
   .customer-row { flex-direction: column; align-items: flex-start; gap: 5px; width: 100%; }
   .customer-row .line-input { width: 100%; margin-left: 0 !important; }
-  .subscription-section { width: 100%; margin-top: 20px; }
-  .form-table { width: 100%; word-break: break-word; }
+  .subscription-section { width: 100%; margin-top: 20px; overflow-x: hidden !important; }
+  .form-table { width: 100%; word-break: break-word; table-layout: fixed; }
   .form-table th { width: auto !important; }
   .bold-label { white-space: normal; }
   .amount-words-row .inline-row { flex-direction: column; align-items: flex-start; gap: 5px; }
