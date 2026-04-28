@@ -1136,27 +1136,79 @@ td[rowspan] {
   .customer-grid { flex-direction: column; gap: 10px; }
   .customer-row { flex-direction: column; align-items: flex-start; gap: 5px; width: 100%; }
   .customer-row .line-input { width: 100%; margin-left: 0 !important; }
-  .subscription-section { width: 100%; margin-top: 20px; overflow-x: hidden !important; }
-  .form-table { width: 100%; word-break: break-word; table-layout: fixed; }
-  .form-table th { width: auto !important; }
-  .bold-label { white-space: normal; }
-  .amount-words-row .inline-row { flex-direction: column; align-items: flex-start; gap: 5px; }
-  .amount-words-row .bottom-line-input { width: 100%; }
-  .payment-mode-section { flex-direction: column; align-items: flex-start; gap: 15px; }
-  .modes { flex-direction: column; gap: 10px; }
-  .cheque-date-field { width: 100%; justify-content: flex-start; }
-  .inline-row.p-10 { flex-direction: column; align-items: flex-start; gap: 5px; }
-  .inline-row.p-10 input { width: 100%; }
-  .signature-section { flex-direction: column; align-items: center; gap: 30px; padding: 15px 10px; }
-  .sig-item { width: 100%; max-width: 300px; }
-  .metadata-container { flex-direction: column; }
-  .metadata-grid { grid-template-columns: 1fr; gap: 10px; }
-  .btn-submit-pro { width: 100%; }
-  .options-grid { grid-template-columns: 1fr; }
-  .additional-plans-grid { grid-template-columns: 1fr; }
-  .boxed-input { width: 100%; margin-left: 0; }
-  .domain-row { flex-direction: column !important; align-items: flex-start; gap: 5px; }
-  td, th { font-size: 13px; }
+  /* Completely transform table to card-based layout for mobile */
+  .form-table, .form-table thead, .form-table tbody, .form-table th, .form-table td, .form-table tr {
+    display: block;
+    width: 100% !important;
+    border: none !important;
+  }
+  
+  .form-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .form-table tr {
+    border: 1px solid #ccc !important;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .form-table td {
+    padding: 10px 5px !important;
+    position: relative;
+    border-bottom: 1px solid #eee !important;
+  }
+
+  .form-table td:last-child {
+    border-bottom: none !important;
+  }
+
+  .form-table td[rowspan], .form-table td[colspan] {
+    display: block;
+    width: 100% !important;
+  }
+
+  /* Make summary rows distinct */
+  .summary-label {
+    background: #f9f9f9 !important;
+    font-weight: bold;
+    text-align: left !important;
+  }
+
+  .summary-val-col {
+    text-align: right;
+  }
+
+  .summary-input {
+    text-align: left !important;
+    padding: 8px !important;
+    border: 1px solid #eee !important;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+
+  .tall-input {
+    min-height: 40px !important;
+  }
+
+  /* Adjust internal spacing */
+  .row-content {
+    gap: 10px;
+  }
+
+  .boxed-input {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-top: 5px;
+  }
+
+  .options-grid, .additional-plans-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (min-width: 769px) {
