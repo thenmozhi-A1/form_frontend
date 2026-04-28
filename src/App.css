@@ -11,17 +11,23 @@
   --accent-color: #43a047;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
   background-color: var(--bg-color);
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: var(--text-dark);
   line-height: 1.5;
-  overflow-x: hidden;
 }
 
 input,
