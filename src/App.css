@@ -1181,17 +1181,40 @@ td[rowspan] {
 
   .summary-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .summary-item label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .summary-item .summary-input {
+    width: 100% !important;
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    border-radius: 4px;
+    background: #fdfdfd;
+    text-align: left !important;
   }
 
   .summary-item.grand {
-    margin-top: 15px;
-    padding-top: 10px;
+    margin-top: 10px;
+    padding-top: 15px;
     border-top: 2px solid var(--primary-color);
-    font-weight: bold;
+  }
+
+  .summary-item.grand label {
     font-size: 18px;
+    color: var(--primary-color);
+  }
+
+  .summary-item.grand .summary-input {
+    font-size: 18px;
+    border-color: var(--primary-color) !important;
   }
 
   .modes-grid-mobile {
