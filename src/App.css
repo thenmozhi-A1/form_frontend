@@ -1142,82 +1142,71 @@ td[rowspan] {
   .customer-grid { flex-direction: column; gap: 10px; }
   .customer-row { flex-direction: column; align-items: flex-start; gap: 5px; width: 100%; }
   .customer-row .line-input { width: 100%; margin-left: 0 !important; }
-  /* Completely transform table to card-based layout for mobile */
-  .form-table, .form-table thead, .form-table tbody, .form-table th, .form-table td, .form-table tr {
-    display: block;
-    width: 100% !important;
-    border: none !important;
-  }
-  
-  .form-table thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+  /* Visibility Controls */
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block !important; }
+
+  /* Mobile Card Styling */
+  .mobile-cards-section {
+    padding: 10px 0;
   }
 
-  .form-table tr {
-    border: 1px solid #ccc !important;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    padding: 10px;
+  .mobile-card {
     background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
 
-  .form-table td {
-    padding: 10px 5px !important;
-    position: relative;
-    border-bottom: 1px solid #eee !important;
+  .mobile-card-title {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
   }
 
-  .form-table td:last-child {
-    border-bottom: none !important;
-  }
-
-  .form-table td[rowspan], .form-table td[colspan] {
-    display: block;
-    width: 100% !important;
-  }
-
-  /* Make summary rows distinct */
-  .summary-label {
-    background: #f9f9f9 !important;
-    font-weight: bold;
-    text-align: left !important;
-  }
-
-  .summary-val-col {
-    text-align: right;
-  }
-
-  .summary-input {
-    text-align: left !important;
-    padding: 8px !important;
-    border: 1px solid #eee !important;
-    border-radius: 4px;
-    margin-top: 5px;
-  }
-
-  .tall-input {
-    min-height: 40px !important;
-  }
-
-  /* Adjust internal spacing */
-  .row-content {
+  .mobile-options {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
   }
 
-  .boxed-input {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-top: 5px;
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
   }
 
-  .options-grid, .additional-plans-grid {
-    grid-template-columns: 1fr !important;
+  .summary-item.grand {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid var(--primary-color);
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .modes-grid-mobile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .vertical {
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
 }
 
 @media (min-width: 769px) {
+  .mobile-only { display: none !important; }
+  .desktop-only { display: block !important; }
+  
   .address-line-2-input {
     margin-left: 75px;
   }

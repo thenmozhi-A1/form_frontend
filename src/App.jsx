@@ -329,7 +329,8 @@ const App = () => {
         </section>
 
 
-        <section className="subscription-section">
+        {/* Desktop Table - Hidden on Mobile */}
+        <section className="subscription-section desktop-only">
           <table className="form-table">
             <thead>
               <tr>
@@ -549,6 +550,101 @@ const App = () => {
               </tr>
             </tbody>
           </table>
+        </section>
+
+        {/* Mobile-Only Card Layout */}
+        <section className="mobile-only mobile-cards-section">
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">1. Website & SEO</h3>
+            <div className="mobile-options">
+              {['Bronze', 'Silver', 'Gold', 'Platinum'].map(val => (
+                <label key={val} className="box-input">
+                  <input type="radio" name="websiteSEO" value={val} checked={formData.subscription.websiteSEO === val} onChange={handleChange} />
+                  <span className={`fake-box ${formData.subscription.websiteSEO === val ? 'checked' : ''}`}>{formData.subscription.websiteSEO === val ? '✔' : ''}</span>
+                  <span className="box-input-label">{val}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">2. No. of Keywords</h3>
+            <div className="mobile-options">
+              {['Limited', 'UnLimited'].map(val => (
+                <label key={val} className="box-input">
+                  <input type="radio" name="keywords" value={val} checked={formData.subscription.keywords === val} onChange={handleChange} />
+                  <span className={`fake-box ${formData.subscription.keywords === val ? 'checked' : ''}`}>{formData.subscription.keywords === val ? '✔' : ''}</span>
+                  <span className="box-input-label">{val}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">3. Domain Name</h3>
+            <input type="text" name="domainName" value={formData.domainName} onChange={handleChange} className="boxed-input" />
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">4. Additional Plans</h3>
+            <div className="mobile-options additional-mobile">
+              {[
+                'SEO,SEM,SMO', 'FB,Twitter,Instagram',
+                'Dynamic Websites', 'E-commerce Websites',
+                'YouTube Promotion', 'Mobile Applications',
+                'E-mail Marketing'
+              ].map(plan => (
+                <label key={plan} className="box-input">
+                  <input type="checkbox" value={plan} checked={formData.subscription.additionalPlans.includes(plan)} onChange={handleChange} />
+                  <span className={`fake-box ${formData.subscription.additionalPlans.includes(plan) ? 'checked' : ''}`}>{formData.subscription.additionalPlans.includes(plan) ? '✔' : ''}</span>
+                  <span className="box-input-label">{plan}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="mobile-summary-card">
+            <div className="summary-item">
+              <label>Total:</label>
+              <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" />
+            </div>
+            <div className="summary-item">
+              <label>GST:</label>
+              <input type="text" name="gstAmount" value={formData.gstAmount} onChange={handleChange} className="summary-input" />
+            </div>
+            <div className="summary-item grand">
+              <label>Grand Total:</label>
+              <input type="text" name="grandTotal" value={formData.grandTotal} onChange={handleChange} className="summary-input" />
+            </div>
+          </div>
+
+          <div className="mobile-payment-details">
+            <div className="customer-row vertical">
+              <span className="bold-label">Payment Amount (In Words):</span>
+              <input type="text" name="paymentAmountWords" value={formData.paymentAmountWords} onChange={handleChange} className="line-input" />
+            </div>
+            <div className="mobile-payment-modes">
+              <span className="bold-label">Payment Mode:</span>
+              <div className="modes-grid-mobile">
+                {['By Cheque', 'By Cash', 'By Gpay', 'Paypal', 'By Neft'].map(mode => (
+                  <label key={mode} className="box-input">
+                    <input type="radio" name="paymentMode" value={mode} checked={formData.paymentMode === mode} onChange={handleChange} />
+                    <span className={`fake-box ${formData.paymentMode === mode ? 'checked' : ''}`}>{formData.paymentMode === mode ? '✔' : ''}</span>
+                    <span className="box-input-label">{mode}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mobile-note-section">
+            <p className="note-underline">Note:</p>
+            <ul className="terms-list-simple">
+              <li>This is application for B & Y Technologies web services.</li>
+              <li>All Services are for One Year duration only.</li>
+              <li>Copyright remains with the client.</li>
+            </ul>
+          </div>
         </section>
 
         <footer className="final-footer">
