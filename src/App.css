@@ -1256,15 +1256,33 @@ td[rowspan] {
     margin-top: 12px;
   }
 
+  .customer-grid {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .customer-row, 
   .customer-row.vertical {
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 8px !important;
+    gap: 5px !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
   }
 
+  .customer-row .line-input,
   .customer-row.vertical .line-input {
     width: 100% !important;
     margin-left: 0 !important;
+    font-size: 14px !important;
+    padding: 8px 0 !important;
+  }
+
+  .bold-label {
+    white-space: normal !important;
+    font-size: 13px !important;
+    display: block !important;
+    width: 100% !important;
   }
 
   .mobile-note-section {
