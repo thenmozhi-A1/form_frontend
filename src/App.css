@@ -14,8 +14,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  overflow-x: hidden !important;
+  width: 100%;
+  min-height: 100%;
   position: relative;
 }
 
@@ -47,15 +47,16 @@ textarea {
 
 .page-container {
   min-height: 100vh;
-  padding: 40px 20px;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100vw;
-  overflow-x: hidden !important;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  overflow-y: auto;
 }
 
 .form-wrapper {
+  margin: auto;
   width: 1000px;
   max-width: 100%;
   background: var(--form-bg);
