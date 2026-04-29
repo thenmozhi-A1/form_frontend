@@ -1278,6 +1278,12 @@ td[rowspan] {
     padding: 8px 0 !important;
   }
 
+  .boxed-input {
+    width: 100% !important;
+    margin-left: 0 !important;
+    box-sizing: border-box !important;
+  }
+
   .bold-label {
     white-space: normal !important;
     font-size: 13px !important;
