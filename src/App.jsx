@@ -186,7 +186,9 @@ const App = () => {
     try {
       console.log('Submitting Form Data:', formData)
       // Save to Backend
-      const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+      const backendUrl = import.meta.env.VITE_API_URL || 
+        (window.location.hostname === 'localhost' ? 'http://localhost:8081' : 'https://spring-backend-production-6e59.up.railway.app');
+      
       const response = await axios.post(`${backendUrl}/api/forms`, formData)
       console.log('Server Response:', response.data)
 
@@ -196,7 +198,10 @@ const App = () => {
       downloadPDF();
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert('Error saving data. Make sure backend is running.')
+      const errorMsg = error.response 
+        ? `Server Error (${error.response.status}): ${error.response.data?.message || 'Check backend logs'}`
+        : 'Cannot connect to backend. Please ensure the backend service is running and accessible.';
+      alert(`Error saving data: ${errorMsg}`)
     }
   }
 
