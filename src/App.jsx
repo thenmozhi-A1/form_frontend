@@ -3,7 +3,7 @@ import axios from 'axios'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 import SignatureCanvas from 'react-signature-canvas'
-import logoImage from '../public/logo.png'
+const logoImage = '/logo.png'
 import './App.css'
 
 const App = () => {
