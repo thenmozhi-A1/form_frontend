@@ -1297,6 +1297,22 @@ td[rowspan] {
     padding: 15px;
     border-radius: 8px;
   }
+
+  .form-type-toggle {
+    margin: 10px 0;
+  }
+
+  .toggle-btn {
+    padding: 5px 18px;
+    font-size: 11px;
+  }
+
+  .renewal-text-input {
+    width: 100% !important;
+    padding: 10px 4px !important;
+    font-size: 14px !important;
+    box-sizing: border-box;
+  }
 }
 
 @media (min-width: 769px) {
@@ -1312,4 +1328,71 @@ td[rowspan] {
   background: var(--primary-color);
   border-color: var(--primary-color);
   color: white;
+}
+
+/* Fresh / Renewal Toggle Buttons */
+.form-type-toggle {
+  display: flex;
+  gap: 0;
+  margin: 15px 0 5px;
+  justify-content: center;
+}
+
+.toggle-btn {
+  padding: 5px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid var(--primary-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fff;
+  color: var(--primary-color);
+  letter-spacing: 0.5px;
+}
+
+.toggle-btn:first-child {
+  border-radius: 6px 0 0 6px;
+  border-right: 1px solid var(--primary-color);
+}
+
+.toggle-btn:last-child {
+  border-radius: 0 6px 6px 0;
+  border-left: 1px solid var(--primary-color);
+}
+
+.toggle-btn.active {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.toggle-btn:hover:not(.active) {
+  background: #f1f8e9;
+}
+
+/* Renewal Text Inputs */
+.renewal-input-row {
+  padding: 8px 5px;
+}
+
+.renewal-text-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid #999;
+  padding: 6px 4px;
+  font-size: 14px;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.renewal-text-input:focus {
+  border-bottom-color: var(--primary-color);
+  border-bottom-width: 2px;
+}
+
+.renewal-text-input::placeholder {
+  color: #bbb;
+  font-style: italic;
+  font-size: 13px;
 }

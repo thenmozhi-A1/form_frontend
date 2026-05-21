@@ -91,6 +91,8 @@ const App = () => {
     pdf.save('BY_Technologies_Order_Form.pdf');
   };
 
+  const [formType, setFormType] = useState('Fresh')
+
   const [formData, setFormData] = useState({
     date: '',
     city: '',
@@ -116,6 +118,14 @@ const App = () => {
       websiteSEO: '',
       keywords: '',
       additionalPlans: [],
+      priceRs: '',
+      amount: ''
+    },
+    renewal: {
+      item1: '',
+      item2: '',
+      item3: '',
+      item4: '',
       priceRs: '',
       amount: ''
     },
@@ -161,6 +171,15 @@ const App = () => {
         subscription: {
           ...prev.subscription,
           [name]: value
+        }
+      }))
+    } else if (name.startsWith('renewal_')) {
+      const field = name.replace('renewal_', '');
+      setFormData(prev => ({
+        ...prev,
+        renewal: {
+          ...prev.renewal,
+          [field]: value
         }
       }))
     } else if (name === 'total') {
@@ -336,6 +355,24 @@ const App = () => {
         </section>
 
 
+        {/* Form Type Toggle Buttons */}
+        <div className="form-type-toggle">
+          <button
+            type="button"
+            className={`toggle-btn ${formType === 'Fresh' ? 'active' : ''}`}
+            onClick={() => setFormType('Fresh')}
+          >
+            Fresh
+          </button>
+          <button
+            type="button"
+            className={`toggle-btn ${formType === 'Renewal' ? 'active' : ''}`}
+            onClick={() => setFormType('Renewal')}
+          >
+            Renewal
+          </button>
+        </div>
+
         {/* Desktop Table - Hidden on Mobile */}
         <section className="subscription-section desktop-only">
           <table className="form-table">
@@ -348,6 +385,8 @@ const App = () => {
               </tr>
             </thead>
             <tbody>
+              {formType === 'Fresh' ? (
+                <>
               {/* Row 1 - Website SEO */}
               <tr>
                 <td className="text-center no-bottom">1</td>
@@ -430,6 +469,60 @@ const App = () => {
                   <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
                 </td>
               </tr>
+                </>
+              ) : (
+                <>
+              {/* Renewal Row 1 */}
+              <tr>
+                <td className="text-center no-bottom">1</td>
+                <td colSpan="2" className="no-bottom">
+                  <div className="renewal-input-row">
+                    <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                  </div>
+                </td>
+                <td rowSpan="3">
+                  <input type="text" name="renewal_priceRs" value={formData.renewal.priceRs} onChange={handleChange} className="summary-input tall-input" />
+                </td>
+                <td rowSpan="3">
+                  <input type="text" name="renewal_amount" value={formData.renewal.amount} onChange={handleChange} className="summary-input tall-input" />
+                </td>
+              </tr>
+
+              {/* Renewal Row 2 */}
+              <tr>
+                <td className="text-center no-v">2</td>
+                <td colSpan="2" className="no-v">
+                  <div className="renewal-input-row">
+                    <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                  </div>
+                </td>
+              </tr>
+
+              {/* Renewal Row 3 */}
+              <tr>
+                <td className="text-center no-v">3</td>
+                <td colSpan="2" className="no-v">
+                  <div className="renewal-input-row">
+                    <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                  </div>
+                </td>
+              </tr>
+
+              {/* Renewal Row 4 */}
+              <tr>
+                <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
+                <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
+                  <div className="renewal-input-row">
+                    <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                  </div>
+                </td>
+                <td className="summary-label">Total</td>
+                <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
+                  <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
+                </td>
+              </tr>
+                </>
+              )}
 
               {/* Summary Bottom Rows */}
               <tr style={{ height: '30px' }}>
@@ -561,6 +654,8 @@ const App = () => {
 
         {/* Mobile-Only Card Layout */}
         <section className="mobile-only mobile-cards-section">
+          {formType === 'Fresh' ? (
+            <>
           <div className="mobile-card">
             <h3 className="mobile-card-title">1. Website & SEO</h3>
             <div className="mobile-options">
@@ -607,6 +702,49 @@ const App = () => {
                   <span className="box-input-label">{plan}</span>
                 </label>
               ))}
+            </div>
+          </div>
+            </>
+          ) : (
+            <>
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">1. Item Description</h3>
+            <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">2. Item Description</h3>
+            <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">3. Item Description</h3>
+            <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+          </div>
+
+          <div className="mobile-card">
+            <h3 className="mobile-card-title">4. Item Description</h3>
+            <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+          </div>
+            </>
+          )}
+
+          <div className="mobile-summary-card">
+            <div className="summary-item">
+              <label>Price (Rs):</label>
+              {formType === 'Fresh' ? (
+                <input type="text" name="priceRs" value={formData.subscription.priceRs} onChange={handleChange} className="summary-input" />
+              ) : (
+                <input type="text" name="renewal_priceRs" value={formData.renewal.priceRs} onChange={handleChange} className="summary-input" />
+              )}
+            </div>
+            <div className="summary-item">
+              <label>Amount:</label>
+              {formType === 'Fresh' ? (
+                <input type="text" name="amount" value={formData.subscription.amount} onChange={handleChange} className="summary-input" />
+              ) : (
+                <input type="text" name="renewal_amount" value={formData.renewal.amount} onChange={handleChange} className="summary-input" />
+              )}
             </div>
           </div>
 
