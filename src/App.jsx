@@ -55,7 +55,7 @@ const App = () => {
             return;
           }
 
-          const span = clonedDoc.createElement('span');
+          const div = clonedDoc.createElement('div');
           let displayValue = input.value;
 
           if (input.type === 'date' && displayValue) {
@@ -63,38 +63,30 @@ const App = () => {
             displayValue = `${d}/${m}/${y}`;
           }
 
-          span.innerText = displayValue;
+          div.innerText = displayValue;
 
-          // Manually copy the most important styles
+          // Copy classes so it perfectly inherits CSS layouts (flex, padding, width, borders)
+          div.className = input.className;
+
           const compStyle = clonedDoc.defaultView.getComputedStyle(input);
-          span.style.fontFamily = compStyle.fontFamily;
-          span.style.fontSize = compStyle.fontSize;
-          span.style.fontWeight = compStyle.fontWeight;
-          span.style.color = compStyle.color;
-          span.style.textAlign = compStyle.textAlign;
-          span.style.display = 'flex';
-          span.style.alignItems = 'center';
-          span.style.justifyContent = compStyle.textAlign === 'center' ? 'center' : (compStyle.textAlign === 'right' ? 'flex-end' : 'flex-start');
-          span.style.width = compStyle.width;
-          span.style.height = compStyle.height;
-          span.style.borderBottom = compStyle.borderBottom;
-          span.style.borderTop = compStyle.borderTop;
-          span.style.borderLeft = compStyle.borderLeft;
-          span.style.borderRight = compStyle.borderRight;
-          span.style.backgroundColor = compStyle.backgroundColor;
-          span.style.padding = compStyle.padding;
-          span.style.margin = compStyle.margin;
-          span.style.boxSizing = 'border-box';
-          span.style.flex = compStyle.flex;
-          span.style.flexGrow = compStyle.flexGrow;
+          div.style.fontFamily = compStyle.fontFamily;
+          div.style.fontSize = compStyle.fontSize;
+          div.style.fontWeight = compStyle.fontWeight;
+          div.style.color = compStyle.color;
+          div.style.textAlign = compStyle.textAlign;
+          div.style.boxSizing = 'border-box';
           
-          // If the original input relies on flex-grow to stretch, ensure the span does too
-          if (compStyle.flexGrow !== '0' || input.classList.contains('line-input') || input.classList.contains('bottom-line-input') || input.classList.contains('summary-input')) {
-              span.style.width = '100%';
-              span.style.minWidth = '50px';
+          // Flex alignment for text
+          div.style.display = 'flex';
+          div.style.alignItems = 'center';
+          div.style.justifyContent = compStyle.textAlign === 'center' ? 'center' : (compStyle.textAlign === 'right' ? 'flex-end' : 'flex-start');
+
+          // If the original input relies on flex-grow to stretch, ensure the div does too
+          if (compStyle.flexGrow !== '0' || input.classList.contains('line-input') || input.classList.contains('bottom-line-input') || input.classList.contains('summary-input') || input.classList.contains('renewal-text-input')) {
+              div.style.width = '100%';
           }
 
-          input.parentNode.replaceChild(span, input);
+          input.parentNode.replaceChild(div, input);
         });
       }
     });
