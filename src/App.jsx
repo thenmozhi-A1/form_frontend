@@ -27,6 +27,26 @@ const App = () => {
         const toggleBtn = clonedDoc.querySelector('.form-type-toggle');
         if (toggleBtn) toggleBtn.style.display = 'none';
 
+        // Hide dropdown arrows in PDF
+        const dropdownArrows = clonedDoc.querySelectorAll('.date-dropdown-arrow');
+        dropdownArrows.forEach(arrow => arrow.style.display = 'none');
+
+        // Force full desktop width to avoid cutoff on mobile screens
+        const wrapper = clonedDoc.querySelector('.form-wrapper');
+        if (wrapper) {
+          wrapper.style.maxWidth = 'none';
+          wrapper.style.width = '1000px';
+          wrapper.style.overflowX = 'visible';
+        }
+        
+        const pageContainer = clonedDoc.querySelector('.page-container');
+        if (pageContainer) {
+          pageContainer.style.width = '1040px';
+          pageContainer.style.minWidth = '1040px';
+          pageContainer.style.overflowX = 'visible';
+          pageContainer.style.padding = '20px';
+        }
+
         const inputs = clonedDoc.querySelectorAll('input[type="text"], input[type="date"], input[type="email"]');
         inputs.forEach(input => {
           // Skip inputs that are meant to be hidden (opacity 0)
@@ -65,6 +85,14 @@ const App = () => {
           span.style.padding = compStyle.padding;
           span.style.margin = compStyle.margin;
           span.style.boxSizing = 'border-box';
+          span.style.flex = compStyle.flex;
+          span.style.flexGrow = compStyle.flexGrow;
+          
+          // If the original input relies on flex-grow to stretch, ensure the span does too
+          if (compStyle.flexGrow !== '0' || input.classList.contains('line-input') || input.classList.contains('bottom-line-input') || input.classList.contains('summary-input')) {
+              span.style.width = '100%';
+              span.style.minWidth = '50px';
+          }
 
           input.parentNode.replaceChild(span, input);
         });
@@ -296,10 +324,10 @@ const App = () => {
                     zIndex: 1
                   }}
                 />
-                <span style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '50%',
+                <span className="date-dropdown-arrow" style={{ 
+                  position: 'absolute', 
+                  right: '10px', 
+                  top: '50%', 
                   transform: 'translateY(-50%)',
                   pointerEvents: 'none',
                   fontSize: '10px'
@@ -484,32 +512,18 @@ const App = () => {
                         <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
                       </div>
                     </td>
-
-                  </tr>
-
-                  {/* Renewal Row 2 */}
-                  <tr>
-                    <td className="text-center no-v">2</td>
-                    <td colSpan="2" className="no-v">
-                      <div className="renewal-input-row">
-                        <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                      </div>
+                    <td rowSpan="1">
+                      <input type="text" name="renewal_priceRs" value={formData.renewal.priceRs} onChange={handleChange} className="summary-input tall-input" />
+                    </td>
+                    <td rowSpan="1">
+                      <input type="text" name="renewal_amount" value={formData.renewal.amount} onChange={handleChange} className="summary-input tall-input" />
                     </td>
                   </tr>
 
-                  {/* Renewal Row 3 */}
-                  <tr>
-                    <td className="text-center no-v">3</td>
-                    <td colSpan="2" className="no-v">
-                      <div className="renewal-input-row">
-                        <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                      </div>
-                    </td>
-                  </tr>
 
                   {/* Renewal Row 4 */}
                   <tr>
-                    <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
+                    <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>2</td>
                     <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
                       <div className="renewal-input-row">
                         <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
@@ -589,10 +603,10 @@ const App = () => {
                             zIndex: 1
                           }}
                         />
-                        <span style={{
-                          position: 'absolute',
-                          right: '5px',
-                          top: '50%',
+                        <span className="date-dropdown-arrow" style={{ 
+                          position: 'absolute', 
+                          right: '5px', 
+                          top: '50%', 
                           transform: 'translateY(-50%)',
                           pointerEvents: 'none',
                           fontSize: '10px'
@@ -814,10 +828,10 @@ const App = () => {
                     marginLeft: 0
                   }}
                 />
-                <span style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '50%',
+                <span className="date-dropdown-arrow" style={{ 
+                  position: 'absolute', 
+                  right: '10px', 
+                  top: '50%', 
                   transform: 'translateY(-50%)',
                   pointerEvents: 'none',
                   fontSize: '12px'
