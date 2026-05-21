@@ -115,7 +115,9 @@ const App = () => {
     subscription: {
       websiteSEO: '',
       keywords: '',
-      additionalPlans: []
+      additionalPlans: [],
+      priceRs: '',
+      amount: ''
     },
     paymentMode: '',
     customerSig: '',
@@ -153,7 +155,7 @@ const App = () => {
           additionalPlans: updatedPlans
         }
       }))
-    } else if (name === 'websiteSEO' || name === 'keywords') {
+    } else if (name === 'websiteSEO' || name === 'keywords' || name === 'priceRs' || name === 'amount') {
       setFormData(prev => ({
         ...prev,
         subscription: {
@@ -364,10 +366,10 @@ const App = () => {
                   </div>
                 </td>
                 <td rowSpan="3">
-                  <input type="text" className="summary-input tall-input" />
+                  <input type="text" name="priceRs" value={formData.subscription.priceRs} onChange={handleChange} className="summary-input tall-input" />
                 </td>
                 <td rowSpan="3">
-                  <input type="text" className="summary-input tall-input" />
+                  <input type="text" name="amount" value={formData.subscription.amount} onChange={handleChange} className="summary-input tall-input" />
                 </td>
               </tr>
 
