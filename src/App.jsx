@@ -20,9 +20,12 @@ const App = () => {
       useCORS: true,
       windowWidth: 1200,
       onclone: (clonedDoc) => {
-        // Hide the submit button in the PDF
+        // Hide the submit button and form toggle in the PDF
         const submitBtn = clonedDoc.querySelector('.submit-section-final');
         if (submitBtn) submitBtn.style.display = 'none';
+
+        const toggleBtn = clonedDoc.querySelector('.form-type-toggle');
+        if (toggleBtn) toggleBtn.style.display = 'none';
 
         const inputs = clonedDoc.querySelectorAll('input[type="text"], input[type="date"], input[type="email"]');
         inputs.forEach(input => {
@@ -31,15 +34,15 @@ const App = () => {
             input.style.display = 'none';
             return;
           }
-          
+
           const span = clonedDoc.createElement('span');
           let displayValue = input.value;
-          
+
           if (input.type === 'date' && displayValue) {
             const [y, m, d] = displayValue.split('-');
             displayValue = `${d}/${m}/${y}`;
           }
-          
+
           span.innerText = displayValue;
 
           // Manually copy the most important styles
@@ -205,12 +208,13 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log('Submitting Form Data:', formData)
+      const payload = { ...formData, formType };
+      console.log('Submitting Form Data:', payload)
       // Save to Backend
-      const backendUrl = import.meta.env.VITE_API_URL || 
+      const backendUrl = import.meta.env.VITE_API_URL ||
         (window.location.hostname === 'localhost' ? 'http://localhost:8081' : 'https://spring-backend-production-6e59.up.railway.app');
-      
-      const response = await axios.post(`${backendUrl}/api/forms`, formData)
+
+      const response = await axios.post(`${backendUrl}/api/forms`, payload)
       console.log('Server Response:', response.data)
 
       alert('Data saved successfully to database!')
@@ -219,7 +223,7 @@ const App = () => {
       downloadPDF();
     } catch (error) {
       console.error('Error submitting form:', error)
-      const errorMsg = error.response 
+      const errorMsg = error.response
         ? `Server Error (${error.response.status}): ${error.response.data?.message || 'Check backend logs'}`
         : 'Cannot connect to backend. Please ensure the backend service is running and accessible.';
       alert(`Error saving data: ${errorMsg}`)
@@ -292,10 +296,10 @@ const App = () => {
                     zIndex: 1
                   }}
                 />
-                <span style={{ 
-                  position: 'absolute', 
-                  right: '10px', 
-                  top: '50%', 
+                <span style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
                   transform: 'translateY(-50%)',
                   pointerEvents: 'none',
                   fontSize: '10px'
@@ -387,140 +391,135 @@ const App = () => {
             <tbody>
               {formType === 'Fresh' ? (
                 <>
-              {/* Row 1 - Website SEO */}
-              <tr>
-                <td className="text-center no-bottom">1</td>
-                <td colSpan="2" className="no-bottom">
-                  <div className="row-content">
-                    <span className="item-label">Website & SEO</span>
-                    <div className="options-grid">
-                      {['Bronze', 'Silver', 'Gold', 'Platinum'].map(val => (
-                        <label key={val} className="box-input">
-                          <input type="radio" name="websiteSEO" value={val} checked={formData.subscription.websiteSEO === val} onChange={handleChange} />
-                          <span className={`fake-box ${formData.subscription.websiteSEO === val ? 'checked' : ''}`}>{formData.subscription.websiteSEO === val ? '✔' : ''}</span>
-                          <span className="box-input-label">{val}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </td>
-                <td rowSpan="3">
-                  <input type="text" name="priceRs" value={formData.subscription.priceRs} onChange={handleChange} className="summary-input tall-input" />
-                </td>
-                <td rowSpan="3">
-                  <input type="text" name="amount" value={formData.subscription.amount} onChange={handleChange} className="summary-input tall-input" />
-                </td>
-              </tr>
+                  {/* Row 1 - Website SEO */}
+                  <tr>
+                    <td className="text-center no-bottom">1</td>
+                    <td colSpan="2" className="no-bottom">
+                      <div className="row-content">
+                        <span className="item-label">Website & SEO</span>
+                        <div className="options-grid">
+                          {['Bronze', 'Silver', 'Gold', 'Platinum'].map(val => (
+                            <label key={val} className="box-input">
+                              <input type="radio" name="websiteSEO" value={val} checked={formData.subscription.websiteSEO === val} onChange={handleChange} />
+                              <span className={`fake-box ${formData.subscription.websiteSEO === val ? 'checked' : ''}`}>{formData.subscription.websiteSEO === val ? '✔' : ''}</span>
+                              <span className="box-input-label">{val}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </td>
+                    <td rowSpan="3">
+                      <input type="text" name="priceRs" value={formData.subscription.priceRs} onChange={handleChange} className="summary-input tall-input" />
+                    </td>
+                    <td rowSpan="3">
+                      <input type="text" name="amount" value={formData.subscription.amount} onChange={handleChange} className="summary-input tall-input" />
+                    </td>
+                  </tr>
 
-              {/* Row 2 - Keywords */}
-              <tr>
-                <td className="text-center no-v">2</td>
-                <td colSpan="2" className="no-v">
-                  <div className="row-content horizontal">
-                    <span className="item-label">No. of Keywords</span>
-                    <div className="options-row">
-                      {['Limited', 'UnLimited'].map(val => (
-                        <label key={val} className="box-input">
-                          <input type="radio" name="keywords" value={val} checked={formData.subscription.keywords === val} onChange={handleChange} />
-                          <span className={`fake-box ${formData.subscription.keywords === val ? 'checked' : ''}`}>{formData.subscription.keywords === val ? '✔' : ''}</span>
-                          <span className="box-input-label">{val}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </td>
-              </tr>
+                  {/* Row 2 - Keywords */}
+                  <tr>
+                    <td className="text-center no-v">2</td>
+                    <td colSpan="2" className="no-v">
+                      <div className="row-content horizontal">
+                        <span className="item-label">No. of Keywords</span>
+                        <div className="options-row">
+                          {['Limited', 'UnLimited'].map(val => (
+                            <label key={val} className="box-input">
+                              <input type="radio" name="keywords" value={val} checked={formData.subscription.keywords === val} onChange={handleChange} />
+                              <span className={`fake-box ${formData.subscription.keywords === val ? 'checked' : ''}`}>{formData.subscription.keywords === val ? '✔' : ''}</span>
+                              <span className="box-input-label">{val}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
 
-              {/* Row 3 - Domain Name */}
-              <tr>
-                <td className="text-center no-v">3</td>
-                <td colSpan="2" className="no-v">
-                  <div className="row-content domain-row">
-                    <span className="item-label">Domain Name</span>
-                    <input type="text" name="domainName" value={formData.domainName} onChange={handleChange} className="boxed-input" />
-                  </div>
-                </td>
-              </tr>
+                  {/* Row 3 - Domain Name */}
+                  <tr>
+                    <td className="text-center no-v">3</td>
+                    <td colSpan="2" className="no-v">
+                      <div className="row-content domain-row">
+                        <span className="item-label">Domain Name</span>
+                        <input type="text" name="domainName" value={formData.domainName} onChange={handleChange} className="boxed-input" />
+                      </div>
+                    </td>
+                  </tr>
 
-              {/* Row 4 - Additional Plans + Total Row */}
-              <tr>
-                <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
-                <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
-                  <div className="row-content">
-                    <span className="item-label">Additional Plans</span>
-                    <div className="additional-plans-grid">
-                      {[
-                        'SEO,SEM,SMO', 'FB,Twitter,Instagram',
-                        'Dynamic Websites', 'E-commerce Websites',
-                        'YouTube Promotion', 'Mobile Applications',
-                        'E-mail Marketing'
-                      ].map(plan => (
-                        <label key={plan} className="box-input">
-                          <input type="checkbox" value={plan} checked={formData.subscription.additionalPlans.includes(plan)} onChange={handleChange} />
-                          <span className={`fake-box ${formData.subscription.additionalPlans.includes(plan) ? 'checked' : ''}`}>{formData.subscription.additionalPlans.includes(plan) ? '✔' : ''}</span>
-                          <span className="box-input-label">{plan}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </td>
-                <td className="summary-label">Total</td>
-                <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
-                  <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
-                </td>
-              </tr>
+                  {/* Row 4 - Additional Plans + Total Row */}
+                  <tr>
+                    <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
+                    <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
+                      <div className="row-content">
+                        <span className="item-label">Additional Plans</span>
+                        <div className="additional-plans-grid">
+                          {[
+                            'SEO,SEM,SMO', 'FB,Twitter,Instagram',
+                            'Dynamic Websites', 'E-commerce Websites',
+                            'YouTube Promotion', 'Mobile Applications',
+                            'E-mail Marketing'
+                          ].map(plan => (
+                            <label key={plan} className="box-input">
+                              <input type="checkbox" value={plan} checked={formData.subscription.additionalPlans.includes(plan)} onChange={handleChange} />
+                              <span className={`fake-box ${formData.subscription.additionalPlans.includes(plan) ? 'checked' : ''}`}>{formData.subscription.additionalPlans.includes(plan) ? '✔' : ''}</span>
+                              <span className="box-input-label">{plan}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="summary-label">Total</td>
+                    <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
+                      <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
+                    </td>
+                  </tr>
                 </>
               ) : (
                 <>
-              {/* Renewal Row 1 */}
-              <tr>
-                <td className="text-center no-bottom">1</td>
-                <td colSpan="2" className="no-bottom">
-                  <div className="renewal-input-row">
-                    <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                  </div>
-                </td>
-                <td rowSpan="3">
-                  <input type="text" name="renewal_priceRs" value={formData.renewal.priceRs} onChange={handleChange} className="summary-input tall-input" />
-                </td>
-                <td rowSpan="3">
-                  <input type="text" name="renewal_amount" value={formData.renewal.amount} onChange={handleChange} className="summary-input tall-input" />
-                </td>
-              </tr>
+                  {/* Renewal Row 1 */}
+                  <tr>
+                    <td className="text-center no-bottom">1</td>
+                    <td colSpan="2" className="no-bottom">
+                      <div className="renewal-input-row">
+                        <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                      </div>
+                    </td>
 
-              {/* Renewal Row 2 */}
-              <tr>
-                <td className="text-center no-v">2</td>
-                <td colSpan="2" className="no-v">
-                  <div className="renewal-input-row">
-                    <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                  </div>
-                </td>
-              </tr>
+                  </tr>
 
-              {/* Renewal Row 3 */}
-              <tr>
-                <td className="text-center no-v">3</td>
-                <td colSpan="2" className="no-v">
-                  <div className="renewal-input-row">
-                    <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                  </div>
-                </td>
-              </tr>
+                  {/* Renewal Row 2 */}
+                  <tr>
+                    <td className="text-center no-v">2</td>
+                    <td colSpan="2" className="no-v">
+                      <div className="renewal-input-row">
+                        <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                      </div>
+                    </td>
+                  </tr>
 
-              {/* Renewal Row 4 */}
-              <tr>
-                <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
-                <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
-                  <div className="renewal-input-row">
-                    <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-                  </div>
-                </td>
-                <td className="summary-label">Total</td>
-                <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
-                  <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
-                </td>
-              </tr>
+                  {/* Renewal Row 3 */}
+                  <tr>
+                    <td className="text-center no-v">3</td>
+                    <td colSpan="2" className="no-v">
+                      <div className="renewal-input-row">
+                        <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                      </div>
+                    </td>
+                  </tr>
+
+                  {/* Renewal Row 4 */}
+                  <tr>
+                    <td className="text-center no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingTop: '10px' }}>4</td>
+                    <td colSpan="2" className="no-v" rowSpan="3" style={{ verticalAlign: 'top', paddingBottom: '20px' }}>
+                      <div className="renewal-input-row">
+                        <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+                      </div>
+                    </td>
+                    <td className="summary-label">Total</td>
+                    <td className="summary-val-col" style={{ position: 'relative', height: '30px' }}>
+                      <input type="text" name="total" value={formData.total} onChange={handleChange} className="summary-input" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '100%' }} />
+                    </td>
+                  </tr>
                 </>
               )}
 
@@ -590,10 +589,10 @@ const App = () => {
                             zIndex: 1
                           }}
                         />
-                        <span style={{ 
-                          position: 'absolute', 
-                          right: '5px', 
-                          top: '50%', 
+                        <span style={{
+                          position: 'absolute',
+                          right: '5px',
+                          top: '50%',
                           transform: 'translateY(-50%)',
                           pointerEvents: 'none',
                           fontSize: '10px'
@@ -656,76 +655,76 @@ const App = () => {
         <section className="mobile-only mobile-cards-section">
           {formType === 'Fresh' ? (
             <>
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">1. Website & SEO</h3>
-            <div className="mobile-options">
-              {['Bronze', 'Silver', 'Gold', 'Platinum'].map(val => (
-                <label key={val} className="box-input">
-                  <input type="radio" name="websiteSEO" value={val} checked={formData.subscription.websiteSEO === val} onChange={handleChange} />
-                  <span className={`fake-box ${formData.subscription.websiteSEO === val ? 'checked' : ''}`}>{formData.subscription.websiteSEO === val ? '✔' : ''}</span>
-                  <span className="box-input-label">{val}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">1. Website & SEO</h3>
+                <div className="mobile-options">
+                  {['Bronze', 'Silver', 'Gold', 'Platinum'].map(val => (
+                    <label key={val} className="box-input">
+                      <input type="radio" name="websiteSEO" value={val} checked={formData.subscription.websiteSEO === val} onChange={handleChange} />
+                      <span className={`fake-box ${formData.subscription.websiteSEO === val ? 'checked' : ''}`}>{formData.subscription.websiteSEO === val ? '✔' : ''}</span>
+                      <span className="box-input-label">{val}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">2. No. of Keywords</h3>
-            <div className="mobile-options">
-              {['Limited', 'UnLimited'].map(val => (
-                <label key={val} className="box-input">
-                  <input type="radio" name="keywords" value={val} checked={formData.subscription.keywords === val} onChange={handleChange} />
-                  <span className={`fake-box ${formData.subscription.keywords === val ? 'checked' : ''}`}>{formData.subscription.keywords === val ? '✔' : ''}</span>
-                  <span className="box-input-label">{val}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">2. No. of Keywords</h3>
+                <div className="mobile-options">
+                  {['Limited', 'UnLimited'].map(val => (
+                    <label key={val} className="box-input">
+                      <input type="radio" name="keywords" value={val} checked={formData.subscription.keywords === val} onChange={handleChange} />
+                      <span className={`fake-box ${formData.subscription.keywords === val ? 'checked' : ''}`}>{formData.subscription.keywords === val ? '✔' : ''}</span>
+                      <span className="box-input-label">{val}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">3. Domain Name</h3>
-            <input type="text" name="domainName" value={formData.domainName} onChange={handleChange} className="boxed-input" />
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">3. Domain Name</h3>
+                <input type="text" name="domainName" value={formData.domainName} onChange={handleChange} className="boxed-input" />
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">4. Additional Plans</h3>
-            <div className="mobile-options additional-mobile">
-              {[
-                'SEO,SEM,SMO', 'FB,Twitter,Instagram',
-                'Dynamic Websites', 'E-commerce Websites',
-                'YouTube Promotion', 'Mobile Applications',
-                'E-mail Marketing'
-              ].map(plan => (
-                <label key={plan} className="box-input">
-                  <input type="checkbox" value={plan} checked={formData.subscription.additionalPlans.includes(plan)} onChange={handleChange} />
-                  <span className={`fake-box ${formData.subscription.additionalPlans.includes(plan) ? 'checked' : ''}`}>{formData.subscription.additionalPlans.includes(plan) ? '✔' : ''}</span>
-                  <span className="box-input-label">{plan}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">4. Additional Plans</h3>
+                <div className="mobile-options additional-mobile">
+                  {[
+                    'SEO,SEM,SMO', 'FB,Twitter,Instagram',
+                    'Dynamic Websites', 'E-commerce Websites',
+                    'YouTube Promotion', 'Mobile Applications',
+                    'E-mail Marketing'
+                  ].map(plan => (
+                    <label key={plan} className="box-input">
+                      <input type="checkbox" value={plan} checked={formData.subscription.additionalPlans.includes(plan)} onChange={handleChange} />
+                      <span className={`fake-box ${formData.subscription.additionalPlans.includes(plan) ? 'checked' : ''}`}>{formData.subscription.additionalPlans.includes(plan) ? '✔' : ''}</span>
+                      <span className="box-input-label">{plan}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </>
           ) : (
             <>
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">1. Item Description</h3>
-            <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">1. Item Description</h3>
+                <input type="text" name="renewal_item1" value={formData.renewal.item1} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">2. Item Description</h3>
-            <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">2. Item Description</h3>
+                <input type="text" name="renewal_item2" value={formData.renewal.item2} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">3. Item Description</h3>
-            <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">3. Item Description</h3>
+                <input type="text" name="renewal_item3" value={formData.renewal.item3} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+              </div>
 
-          <div className="mobile-card">
-            <h3 className="mobile-card-title">4. Item Description</h3>
-            <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
-          </div>
+              <div className="mobile-card">
+                <h3 className="mobile-card-title">4. Item Description</h3>
+                <input type="text" name="renewal_item4" value={formData.renewal.item4} onChange={handleChange} className="renewal-text-input" placeholder="Enter item description" />
+              </div>
             </>
           )}
 
@@ -815,10 +814,10 @@ const App = () => {
                     marginLeft: 0
                   }}
                 />
-                <span style={{ 
-                  position: 'absolute', 
-                  right: '10px', 
-                  top: '50%', 
+                <span style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
                   transform: 'translateY(-50%)',
                   pointerEvents: 'none',
                   fontSize: '12px'
